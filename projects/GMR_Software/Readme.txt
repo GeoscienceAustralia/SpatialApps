@@ -1,0 +1,1 @@
+GMR software repo for Magnetic field strength and angle calculation based on data and time. Also for calculation of location of plot corners based on which corner to start on.
