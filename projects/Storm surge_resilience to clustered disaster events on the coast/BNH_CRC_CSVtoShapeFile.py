@@ -234,7 +234,7 @@ def Write_Dict_To_Shapefile_osgeo(totalList, shapefileName, EPSG):
             field_name.SetWidth(24)
             layer.CreateField(field_name)
 
-    # Create polygon object
+    # Create polyline object
     ring = ogr.Geometry(ogr.wkbLinearRing)
     count = 0
     for entry in totalList:
@@ -353,12 +353,16 @@ if __name__ == '__main__':
     t0 = time.time()
 
     # Required user input to specify the workspace where the CSV to be processed exists
-    workspace = (r"")
+    workspace = (r"\\nas\gemd\georisk\HaRIA_C_Coastal\Projects\BNHCRC\Modelling\Shoreline Response\OldBar\SampleModelOutputs_27July17")
 
     # EPSG code representing the coordinate reference system of the XY pairs in the CSV
     # 28356 =  GDA94 MGA 56
     EPSG = 28356
-    shapefileName = 'coastlineTESTING.shp'
+    # Shapefile to be created
+    shapefileName = 'UQ2GA_shoreline.shp'
+
+    # CSV to be processed in the workspace
+    csvFile = 'UQ2GA_shoreline.csv'
 
     # Test to ensure the workspace provided exists
     os.path.exists(workspace)
@@ -386,7 +390,7 @@ if __name__ == '__main__':
     # Log the workspace to the logfile
     log.info('Workspace: ' + workspace)
 
-    shoreline = os.path.join(workspace, 'ROUGH1_shoreline.csv')
+    shoreline = os.path.join(workspace, csvFile)
 
     dictionary = {}
 
