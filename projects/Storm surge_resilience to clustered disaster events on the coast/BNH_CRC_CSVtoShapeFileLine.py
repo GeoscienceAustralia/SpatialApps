@@ -220,7 +220,7 @@ def Write_Dict_To_Shapefile_osgeo(totalList, shapefileName, EPSG):
     outputspatialRef.ImportFromEPSG(EPSG)
 
     # Create layer
-    layer = shapeData.CreateLayer(shapePath, srs=outputspatialRef, geom_type=ogr.wkbPolygon)
+    layer = shapeData.CreateLayer(shapePath, srs=outputspatialRef, geom_type=ogr.wkbLineString)
 
     # add fields
     fieldNames = ["Date", "Time"]
@@ -235,7 +235,7 @@ def Write_Dict_To_Shapefile_osgeo(totalList, shapefileName, EPSG):
             layer.CreateField(field_name)
 
     # Create polyline object
-    ring = ogr.Geometry(ogr.wkbLinearRing)
+    line = ogr.Geometry(ogr.wkbLineString)
     count = 0
     for entry in totalList:
         logAndprint( 'Row {0} being processed'.format(count))
@@ -252,18 +252,18 @@ def Write_Dict_To_Shapefile_osgeo(totalList, shapefileName, EPSG):
                 dictCounter += 1
 
             else:
-                ring.AddPoint(float(key), float(value))
-                logAndprint('\t\t{0} and {1} vertex added to ring'.format(key,value))
+                line.AddPoint(float(key), float(value))
+                logAndprint('\t\t{0} and {1} vertex added to line'.format(key,value))
                 dictCounter += 1
 
-        poly = ogr.Geometry(ogr.wkbPolygon)
-        logAndprint('Adding geometry')
-        poly.AddGeometry(ring)
+#        poly = ogr.Geometry(ogr.wkbLineString)
+#        logAndprint('Adding geometry')
+#        poly.AddGeometry(line)
 
         # Create feature
         layerDefinition = layer.GetLayerDefn()
         feature = ogr.Feature(layerDefinition)
-        feature.SetGeometry(poly)
+        feature.SetGeometry(line)
         # Set the FID field to the count
         feature.SetFID(count)
 
@@ -286,11 +286,11 @@ def Write_Dict_To_Shapefile_osgeo(totalList, shapefileName, EPSG):
         count += 1
 
         # Empty the ring otherwise the vertices are accumulatied
-        ring.Empty()
+        line.Empty()
 
 
     # Cleanup
-    poly.Destroy()
+    #poly.Destroy()
     feature.Destroy()
 
     # Cleanup
