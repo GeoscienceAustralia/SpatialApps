@@ -353,7 +353,7 @@ if __name__ == '__main__':
     t0 = time.time()
 
     # Required user input to specify the workspace where the CSV to be processed exists
-    workspace = (r"\\nas\gemd\georisk\HaRIA_C_Coastal\Projects\BNHCRC\Modelling\Shoreline Response\OldBar\SampleModelOutputs_27July17")
+    workspace = (r"")
 
     # EPSG code representing the coordinate reference system of the XY pairs in the CSV
     # 28356 =  GDA94 MGA 56
