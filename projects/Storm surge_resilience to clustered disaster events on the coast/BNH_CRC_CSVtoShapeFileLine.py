@@ -353,7 +353,7 @@ if __name__ == '__main__':
     t0 = time.time()
 
     # Required user input to specify the workspace where the CSV to be processed exists
-    workspace = (r"")
+    workspace = raw_input('Enter the folder containing the CSV to be processed: ')
 
     # EPSG code representing the coordinate reference system of the XY pairs in the CSV
     # 28356 =  GDA94 MGA 56
@@ -362,7 +362,7 @@ if __name__ == '__main__':
     shapefileName = 'UQ2GA_shoreline.shp'
 
     # CSV to be processed in the workspace
-    csvFile = 'UQ2GA_shoreline.csv'
+    csvFile = raw_input('Enter the CSV file name of the file to be processed: ')
 
     # Test to ensure the workspace provided exists
     os.path.exists(workspace)
