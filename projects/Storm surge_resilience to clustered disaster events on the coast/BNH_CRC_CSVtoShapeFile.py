@@ -36,6 +36,7 @@ import csv
 import collections
 from osgeo import gdal, ogr, osr
 import inspect
+import shutil
 
 ## Check out any necessary licenses
 #arcpy.CheckOutExtension("spatial")
@@ -352,17 +353,18 @@ if __name__ == '__main__':
     # Start the timer
     t0 = time.time()
 
-    # Required user input to specify the workspace where the CSV to be processed exists
-    workspace = (r"\\nas\gemd\georisk\HaRIA_C_Coastal\Projects\BNHCRC\Modelling\Shoreline Response\OldBar\SampleModelOutputs_27July17")
+     # Required user input to specify the workspace where the CSV to be processed exists
+    workspace = raw_input('Enter the folder containing the CSV to be processed: ')
 
     # EPSG code representing the coordinate reference system of the XY pairs in the CSV
     # 28356 =  GDA94 MGA 56
     EPSG = 28356
-    # Shapefile to be created
-    shapefileName = 'UQ2GA_shoreline.shp'
 
     # CSV to be processed in the workspace
-    csvFile = 'UQ2GA_shoreline.csv'
+    csvFile = raw_input('Enter the CSV file name of the file to be processed: ')
+
+    # Shapefile to be created
+    shapefileName = csvFile.split('.')[0] + r'.shp'
 
     # Test to ensure the workspace provided exists
     os.path.exists(workspace)
@@ -375,6 +377,10 @@ if __name__ == '__main__':
     versionStub = stub(os.path.join(workspace,r'logfile.log'))
     logfile = os.path.join(workspace, r'logfile_' + versionStub + '.log')
     print '\nlogfile name:' + logfile
+
+    #Copy the python file being run to the destination folder to keep a copy of the script with the outputs
+    # Use the versionStub so as to link the log file with the Python script
+    shutil.copy2(sys.argv[0], os.path.join(workspace, os.path.split(sys.argv[0])[1].split('.')[0] + '_' + versionStub + '.py'))
 
     # Configure the logfile
     log.basicConfig(filename=logfile,
