@@ -393,8 +393,10 @@ if __name__ == '__main__':
     # Log the path and name of the script used to the logfile
     log.info('Script started: ' + sys.argv[0])
 #    assert os.path.exists(logfile)
-    # Log the workspace to the logfile
+    # Log the input CSV and the workspace
+    log.info('Input CSV: ' + os.path.join(workspace, csvFile))
     log.info('Workspace: ' + workspace)
+
 
     shoreline = os.path.join(workspace, csvFile)
 
