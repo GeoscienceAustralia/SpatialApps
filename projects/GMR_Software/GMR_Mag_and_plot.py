@@ -148,7 +148,7 @@ def show_entry_fields():
 
 master = Tk()
 # window title
-master.title('INPUT PAGE: GMR Magnetic values and plot corner calculations')
+master.title('INPUTS: GMR Mag and corner calc')
 #window size
 master.geometry('650x300')
 
@@ -176,13 +176,13 @@ Label(master, text="   eg. -30 (clockwise is +ve)").grid(row=5, column=2)
 e1 = Entry(master)
 #e1.insert(END, 'Kununurra01')    # default value
 e5 = Entry(master)
-#e5.insert(END, '60')
+e5.insert(END, '60')
 e2 = Entry(master)
 #e2.insert(END, '-15.783529')   # default value
 e3 = Entry(master)
 #e3.insert(END, '128.743261')   # default value
 e4 = Entry(master)
-#e4.insert(END, '25')   # default value
+e4.insert(END, '25')   # default value
 
 e6 = Entry(master)
 e6.insert(END, '0')   # default value
@@ -238,16 +238,8 @@ Button(master, text='2. Get Results', command=master.quit).grid(row=12, column=2
 
 
 # end the tkinter UI
+master.mainloop()
 
-
-#master.destroy()
-
-try:
-    
-    master.mainloop()
-    
-except:
-    pass
 
 
 
@@ -364,9 +356,6 @@ print
 
 
 ''' FORTAN CODE ++++++++++++++++++++++++++++++++++++++++++++++++++++   '''
-
-
-
 #name the output file for FORTRAN - this temporary and overwritten each time - but he data is saved in the output text file
 outFile = 'tempFORTRAN.txt'
 
@@ -382,17 +371,9 @@ decimalYear = str(thisDate)
 latitude = convertToDMS(lati)
 longitude = convertToDMS(longi)
 
-try:
-
-    # open the FORTRAN code and input the parameters then run it - it sends the results to the temp text file
-    p = Popen(r'agrf15s.exe', stdin=PIPE) #NOTE: no shell=True here
-    p.communicate(os.linesep.join([outFile, "1", "1", decimalYear, site_name, latitude, longitude, hgt, "0", ""]))
-
-except:
-    pass
-
-
-
+# open the FORTRAN code and input the parameters then run it - it sends the results to the temp text file
+p = Popen(r'agrf15s.exe', stdin=PIPE) #NOTE: no shell=True here
+p.communicate(os.linesep.join([outFile, "1", "1", decimalYear, site_name, latitude, longitude, hgt, "0", ""]))
 print
 print "Output files are in  " + thisOutput
 
@@ -728,6 +709,13 @@ fout.close()
 os.startfile(thisDir + '/' + thisOutput)
 #os.close(outFile)
 #os.remove(outFile)
+
+
+
+
+
+
+
 
 
 print 'finished'
