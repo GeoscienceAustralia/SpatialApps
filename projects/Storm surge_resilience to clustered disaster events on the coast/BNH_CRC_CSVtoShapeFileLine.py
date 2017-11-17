@@ -10,7 +10,8 @@ Description:
     Quality assurance to include:
         - via ArcGIS, check that the data plots in the right location relative
           to other date for the location (coordinate reference system check)
-        - check on the number of vertices (160) for each polygon
+        - check on the number of vertices for each polygon match the number of
+          coordinate pairs in the source CSV
         - check the number of features in the shapefile matches the CSV
         - manual check in ArcGIS to edit a polygon and confirm the number of
           vertices and the X/Y values are correct
