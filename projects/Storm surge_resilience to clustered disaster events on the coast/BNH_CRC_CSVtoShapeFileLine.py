@@ -35,7 +35,9 @@ import doctest
 import unittest
 import csv
 import collections
-from osgeo import gdal, ogr, osr
+import gdal
+import ogr
+import osr
 import inspect
 import shutil
 
@@ -68,7 +70,7 @@ def logAndprint(msg):
     Arguments
     message -- Value to be written to the console and to the log file
     '''
-    print msg
+    print(msg)
     log.info(' Line: ' + str(inspect.currentframe().f_back.f_lineno) +
         ' :: ' + msg)
 
@@ -209,7 +211,7 @@ def Write_Dict_To_Shapefile_osgeo(totalList, shapefileName, EPSG):
     # Create shapeData, overwrite the data if it exists
     os.chdir(workspace)
     if os.path.exists(shapefileName):
-        print 'Shapefile exists and will be deleted'
+        print('Shapefile exists and will be deleted')
         driver.DeleteDataSource(shapePath)
         assert not os.path.exists(shapePath)
 
@@ -218,7 +220,7 @@ def Write_Dict_To_Shapefile_osgeo(totalList, shapefileName, EPSG):
     # Create spatialReference for output
     outputspatialRef = osr.SpatialReference()
 
-    # Set coordinate reference system to GDA94/MGA zone 56
+    # Set coordinate reference system 
     outputspatialRef.ImportFromEPSG(EPSG)
 
     # Create layer
@@ -247,7 +249,7 @@ def Write_Dict_To_Shapefile_osgeo(totalList, shapefileName, EPSG):
         for key, value in totalList[count].iteritems():
             logAndprint('\n{0} row, {1} vertex being created'.format(count, dictCounter))
             logAndprint('\tKey: {0}, value: {1}'.format(key, value))
-    #        print count
+    #        print(count)
             if dictCounter < 2:
                 logAndprint('\tRow passed')
                 pass
@@ -358,8 +360,8 @@ if __name__ == '__main__':
     workspace = raw_input('Enter the folder containing the CSV to be processed: ')
 
     # EPSG code representing the coordinate reference system of the XY pairs in the CSV
-    # 28356 =  GDA94 MGA 56
-    EPSG = 28356
+    EPSG = int(raw_input('Enter the EPSG projection code (28356 = MGA56, 28354 = MGA54): '))
+    assert type(EPSG) == int
 
     # CSV to be processed in the workspace
     csvFile = raw_input('Enter the CSV file name of the file to be processed: ')
@@ -376,8 +378,12 @@ if __name__ == '__main__':
 
     # Create a unique logfile based on date and integer
     versionStub = stub(os.path.join(workspace,r'logfile.log'))
+    try: 
+        log.shutdown()
+    except:
+        print('Logfile does not exist')
     logfile = os.path.join(workspace, r'logfile_' + versionStub + '.log')
-    print '\nlogfile name:' + logfile
+    print('\nlogfile name:' + logfile)
 
     #Copy the python file being run to the destination folder to keep a copy of the script with the outputs
     # Use the versionStub so as to link the log file with the Python script
@@ -390,10 +396,11 @@ if __name__ == '__main__':
                     format='%(asctime)s,   Line:%(lineno)d %(levelname)s: %(message)s',
                     datefmt='%a %d/%b/%Y %I:%M:%S %p')
 #    doctest.testmod()
-    assert os.path.exists(logfile)
     # Log the path and name of the script used to the logfile
     log.info('Script started: ' + sys.argv[0])
-#    assert os.path.exists(logfile)
+    log.info('EPSG code: ' + str(EPSG))
+    # Ensure the logfile exists
+    assert os.path.exists(logfile)
     # Log the workspace to the logfile
     log.info('Workspace: ' + workspace)
     log.info('CSV: ' + os.path.join(workspace, csvFile))
@@ -424,5 +431,21 @@ if __name__ == '__main__':
     # Print the duration of the script to screen and capture in the log file
     print('\nFinished at: ' + time.strftime("%c", time.localtime(time.time())))
     finishMsg = timer(t0)
-    print finishMsg
+    print(finishMsg)
     log.info(finishMsg)
+    # Close the logfile
+    log.shutdown()
+    # Remove variables from memory
+    del t0
+    del workspace
+    del EPSG
+    del csvFile
+    del shapefileName
+    del versionStub
+    del logfile
+    del dictionary
+    del totalList
+    del finishMsg
+    del shoreline
+    
+    
